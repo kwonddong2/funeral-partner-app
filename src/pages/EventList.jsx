@@ -1,0 +1,80 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Top from '../components/tds/Top';
+import ListRow from '../components/tds/ListRow';
+import Badge from '../components/tds/Badge';
+
+const EventList = () => {
+    const navigate = useNavigate();
+    const [activeTab, setActiveTab] = useState('ongoing'); // ongoing | completed
+
+    const ongoingEvents = [
+        { id: 1, name: "홍길동님 빈소", place: "서울대병원 장례식장 3호실", date: "2025.01.25 ~", status: "ongoing" },
+        { id: 2, name: "김철수님 빈소", place: "신촌세브란스 5호실", date: "2025.01.26 ~", status: "ongoing" },
+    ];
+
+    const completedEvents = [
+        { id: 3, name: "이영희님 빈소", place: "삼성서울병원 1호실", date: "2024.12.20", status: "completed" },
+        { id: 4, name: "박민수님 빈소", place: "아산병원 2호실", date: "2024.12.15", status: "completed" },
+        { id: 5, name: "최지우님 빈소", place: "성모병원 7호실", date: "2024.12.10", status: "completed" },
+    ];
+
+    const events = activeTab === 'ongoing' ? ongoingEvents : completedEvents;
+
+    return (
+        <div className="pb-12 bg-brand-bg min-h-screen">
+            <Top
+                title="행사 관리"
+                onBack={() => navigate('/')}
+            />
+
+            {/* Tabs */}
+            <div className="flex bg-white border-b border-[#F2F4F6]">
+                <Tab label="진행 중" isActive={activeTab === 'ongoing'} onClick={() => setActiveTab('ongoing')} />
+                <Tab label="완료" isActive={activeTab === 'completed'} onClick={() => setActiveTab('completed')} />
+            </div>
+
+            {/* List */}
+            <div className="mt-2">
+                {events.map((event) => (
+                    <div key={event.id} className="bg-white mb-[1px]">
+                        <ListRow
+                            onClick={() => navigate(`/events/${event.id}`)}
+                            left={
+                                <div className={`w-[40px] h-[40px] rounded-full flex items-center justify-center text-[14px] font-bold ${event.status === 'ongoing' ? 'bg-[#FFF1EB] text-brand-orange' : 'bg-[#F2F4F6] text-[#8B95A1]'}`}>
+                                    {event.name[0]}
+                                </div>
+                            }
+                            contents={
+                                <>
+                                    <div className="flex items-center gap-2 mb-0.5">
+                                        <span className="text-[16px] font-bold text-brand-black">{event.name}</span>
+                                        {event.status === 'ongoing' && <Badge variant="orange">진행</Badge>}
+                                    </div>
+                                    <div className="text-[13px] text-[#8B95A1]">{event.place}</div>
+                                </>
+                            }
+                            right={
+                                <span className="text-[13px] text-[#8B95A1]">{event.date}</span>
+                            }
+                        />
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const Tab = ({ label, isActive, onClick }) => (
+    <div
+        onClick={onClick}
+        className={`flex-1 text-center h-[52px] flex items-center justify-center text-[15px] font-semibold cursor-pointer transition-colors relative ${isActive ? 'text-brand-black' : 'text-[#8B95A1]'}`}
+    >
+        {label}
+        {isActive && (
+            <div className="absolute bottom-0 left-0 w-full h-[2px] bg-brand-black" />
+        )}
+    </div>
+)
+
+export default EventList;
