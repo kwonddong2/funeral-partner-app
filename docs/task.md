@@ -1,0 +1,79 @@
+
+# Tasks: Funeral Director Partner App
+
+- [/] Project Setup <!-- id: 0 -->
+    - [x] Initialize Vite + React Project <!-- id: 1 -->
+    - [x] Install Tailwind CSS & Configure <!-- id: 2 -->
+    - [x] Setup Project Structure (components, pages, assets) <!-- id: 3 -->
+- [x] Design System Implementation (TDS Style) <!-- id: 4 -->
+    - [x] Configure Tailwind Colors & Fonts (Pretendard) <!-- id: 5 -->
+    - [x] Create TDS Base Components <!-- id: 7 -->
+        - [x] Button (Primary/Secondary/Text) <!-- id: 7-1 -->
+        - [x] Badge (Status indicators) <!-- id: 7-2 -->
+        - [x] ListRow (Standard list item with arrow) <!-- id: 7-3 -->
+        - [x] ListHeader (Section titles) <!-- id: 7-4 -->
+        - [x] Top (Navigation Header) <!-- id: 7-5 -->
+        - [x] BottomCTA (Fixed bottom button) <!-- id: 7-6 -->
+- [x] Feature: Main Dashboard <!-- id: 8 -->
+    - [x] Layout (Responsive Container like 'Asset' view) <!-- id: 9 -->
+    - [x] Header (Using 'Top' component) <!-- id: 10 -->
+    - [x] Settlement Status Card (Custom Card) <!-- id: 11 -->
+    - [x] Event Management Section (Orange Card) <!-- id: 12 -->
+    - [x] Menu Grid (Using 'ListRow' or Custom Grid) <!-- id: 13 -->
+- [x] UI Polish (Alignment & Visuals) <!-- id: 17 -->
+- [x] UI Polish Round 2 (Spacing & Grouping) <!-- id: 22 -->
+- [x] UI Polish Round 3 (Grid Layout & Centering) <!-- id: 26 -->
+    - [x] Change Event Grid to 3-Column Layout <!-- id: 27 -->
+    - [x] Revert to Center Alignment for Action Cards (match image) <!-- id: 28 -->
+    - [x] Update Orange Card Content (Pill style) <!-- id: 29 -->
+- [x] Dashboard Refactor (UX Pivot) <!-- id: 30 -->
+    - [x] Remove Quick Action Cards <!-- id: 31 -->
+    - [x] Add "This Month's Completed Events" Stat Card <!-- id: 32 -->
+    - [x] Refine Layout (Settlement + Ongoing + Stats) <!-- id: 33 -->
+- [x] Feature: Event List & Detail <!-- id: 34 -->
+    - [x] Create Event List Page (Tabs + ListRow) <!-- id: 35 -->
+    - [x] Create Event Detail Page (Context Info + Action Grid) <!-- id: 36 -->
+    - [x] Connect Routing (Dashboard -> List -> Detail) <!-- id: 37 -->
+- [x] Feature: Idle State (No Active Event) <!-- id: 38 -->
+    - [x] Create 'Queue Status' Card (Blue Gradient) <!-- id: 39 -->
+    - [x] Implement State Toggle (Active vs Idle) in Dashboard <!-- id: 40 -->
+- [x] Feature: Dispatch Cycle (Refinement) <!-- id: 41 -->
+    - [x] Update Dispatch Modal (Show Raw Request Info, Hide Funeral Home) <!-- id: 45 -->
+    - [x] Decouple Report from Accept (Add intermediate 'Accepted' state) <!-- id: 46 -->
+    - [x] Update Pre-Report Form (Crematorium, Ambulance, Parlor fields) <!-- id: 43 -->
+    - [x] Verify Workflow (Idle -> Dispatch -> Accept -> Call -> Report -> Active) <!-- id: 44 -->
+- [x] Feature: User Feedback (Toast) <!-- id: 47 -->
+    - [x] Create Toast Component & Context <!-- id: 48 -->
+    - [x] Trigger "Sent to HQ" Toast on Report Submit <!-- id: 49 -->
+- [x] Feature: Consultation Report <!-- id: 50 -->
+    - [x] Create Report Page Layout (`/events/:id/report/consultation`) <!-- id: 51 -->
+    - [x] Implement TDS Input/Select/DatePicker Components <!-- id: 52 -->
+    - [x] Build Sectioned Form (Info, Schedule, Notes) <!-- id: 53 -->
+    - [x] Add Form Validation & Submit Logic <!-- id: 54 -->
+    - [x] Feature: Product Selector (Full Catalog) <!-- id: 55 -->
+        - [x] Create Mock Product Data (JSON) <!-- id: 56 -->
+        - [x] Replace Input with Select/Dropdown Component <!-- id: 57 -->
+    - [x] Create Mock Product Data (JSON) <!-- id: 56 -->
+    - [x] Replace Input with Select/Dropdown Component <!-- id: 57 -->
+- [x] Feature: Dynamic Reporting Timeline (UX) <!-- id: 58 -->
+    - [x] Create Timeline Component (Vertical Stepper) <!-- id: 59 -->
+    - [x] Implement Status Logic (Done/Active/Locked) <!-- id: 60 -->
+    - [x] Rename Steps to '1일차/2일차 보고' (Generic) <!-- id: 62 -->
+    - [x] Remove Hiding Logic for No-Mortuary <!-- id: 63 -->
+    - [x] Add '3일차 보고' Step <!-- id: 64 -->
+    - [x] Rename Steps to '1일차/2일차 보고' (Generic) <!-- id: 62 -->
+    - [x] Remove Hiding Logic for No-Mortuary <!-- id: 63 -->
+    - [x] Add '3일차 보고' Step <!-- id: 64 -->
+- [x] Feature: Daily Report & Checklist <!-- id: 65 -->
+    - [x] Create DailyReport Page (Tabbed Interface) <!-- id: 66 -->
+    - [x] Implement Checklist Component (Grouped Items) <!-- id: 67 -->
+    - [x] Implement Photo Grid Component (Proof of Work) <!-- id: 68 -->
+    - [x] Populate Day 1 Mock Data (from User Image) <!-- id: 69 -->
+    - [x] Logic: Lock Future Tabs in DailyReport <!-- id: 70 -->
+    - [x] Logic: Conditional Checklist/Photos (No-Mortuary vs Standard) <!-- id: 71 -->
+- [x] Dev Tools: Workflow Reset <!-- id: 72 -->
+    - [x] Add 'Reset Progress' Button in EventDetail <!-- id: 73 -->
+    - [x] Allow Re-clicking Completed Timeline Steps <!-- id: 74 -->
+- [ ] Verification <!-- id: 14 -->
+    - [ ] Verify Responsiveness (Mobile, Tablet, Desktop) <!-- id: 15 -->
+    - [ ] Verify Design Consistency (vs Mockups) <!-- id: 16 -->
