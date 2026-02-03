@@ -68,6 +68,7 @@ ${formData.notes}`;
         // Simulate Server Save
         localStorage.setItem(`event_${id}_product`, formData.product);
         localStorage.setItem(`event_${id}_status`, 'consultation_done'); // Mark step as done
+        localStorage.setItem(`event_${id}_consultation`, JSON.stringify(formData)); // Save full report data
 
         setToastMsg("초도상담 보고가 완료되었습니다");
         setShowToast(true);

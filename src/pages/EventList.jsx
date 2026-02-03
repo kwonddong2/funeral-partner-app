@@ -8,10 +8,40 @@ const EventList = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('ongoing'); // ongoing | completed
 
+    // Helper to get Event Data from LocalStorage
+    const getEventData = (baseEvent) => {
+        const consultationStr = localStorage.getItem(`event_${baseEvent.id}_consultation`);
+        const preliminaryStr = localStorage.getItem(`event_${baseEvent.id}_preliminary`);
+
+        const consData = (consultationStr && consultationStr !== "undefined") ? JSON.parse(consultationStr) : null;
+        const preData = (preliminaryStr && preliminaryStr !== "undefined") ? JSON.parse(preliminaryStr) : null;
+
+        let name = baseEvent.name;
+        let place = baseEvent.place;
+        let date = baseEvent.date;
+
+        // Name Priority: Consultation > Preliminary (Deceased) > Preliminary (Customer) > Default
+        if (consData?.deceasedName) name = `${consData.deceasedName}님 빈소`;
+        else if (preData?.deceasedName) name = `${preData.deceasedName}님 빈소`;
+        else if (preData?.customerName) name = `${preData.customerName}님 (의뢰)`;
+
+        // Place Priority
+        if (consData?.place) place = consData.place;
+        else if (preData?.place) place = preData.place;
+
+        // Date Priority
+        if (consData?.receptionDate) date = `${consData.receptionDate} ~`;
+
+        // Check if Preliminary is done
+        const isPrelimDone = localStorage.getItem(`event_${baseEvent.id}_preliminary_done`) === 'true';
+
+        return { ...baseEvent, name, place, date, isPrelimDone };
+    };
+
     const ongoingEvents = [
-        { id: 1, name: "홍길동님 빈소", place: "서울대병원 장례식장 3호실", date: "2025.01.25 ~", status: "ongoing" },
-        { id: 2, name: "김철수님 빈소", place: "신촌세브란스 5호실", date: "2025.01.26 ~", status: "ongoing" },
-    ];
+        { id: 1, name: "행사 정보 없음", place: "미정", date: "-", status: "ongoing" },
+        { id: 2, name: "행사 정보 없음", place: "미정", date: "-", status: "ongoing" },
+    ].map(getEventData).filter(event => event.isPrelimDone);
 
     const completedEvents = [
         { id: 3, name: "이영희님 빈소", place: "삼성서울병원 1호실", date: "2024.12.20", status: "completed" },
