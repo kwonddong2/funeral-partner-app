@@ -78,7 +78,7 @@ const QueueStatus = () => {
 
     return (
         <div className="bg-[#F2F4F6] min-h-screen pb-12 relative font-sans">
-            <Top title="순번 현황" showBack={true} onBack={() => navigate('/')} className="bg-white" />
+            <Top title="순번 현황" showBack={true} onBack={() => navigate('/dashboard')} className="bg-white" />
 
             {/* Hotline */}
             {hotline ? (

@@ -42,7 +42,7 @@ const Profile = () => {
             <Top
                 title="내 정보 수정"
                 showBack={true}
-                onBack={() => navigate('/')}
+                onBack={() => navigate('/dashboard')}
             />
 
             <Toast message="저장되었습니다" isVisible={showToast} onClose={() => setShowToast(false)} />

@@ -71,7 +71,7 @@ const ItemOrder = () => {
 
         setToastMsg("물품 신청이 완료되었습니다.");
         setShowToast(true);
-        setTimeout(() => navigate('/'), 1500);
+        setTimeout(() => navigate('/dashboard'), 1500);
     };
 
     // Filter Logic
@@ -84,7 +84,7 @@ const ItemOrder = () => {
             <Top
                 title="물품 신청"
                 showBack={true}
-                onBack={() => navigate('/')}
+                onBack={() => navigate('/dashboard')}
             />
 
             {/* Sticky Tabs */}

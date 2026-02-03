@@ -38,24 +38,58 @@ const EventList = () => {
         return { ...baseEvent, name, place, date, isPrelimDone };
     };
 
-    const ongoingEvents = [
-        { id: 1, name: "행사 정보 없음", place: "미정", date: "-", status: "ongoing" },
-        { id: 2, name: "행사 정보 없음", place: "미정", date: "-", status: "ongoing" },
-    ].map(getEventData).filter(event => event.isPrelimDone);
+    const [events, setEvents] = useState([]);
 
-    const completedEvents = [
-        { id: 3, name: "이영희님 빈소", place: "삼성서울병원 1호실", date: "2024.12.20", status: "completed" },
-        { id: 4, name: "박민수님 빈소", place: "아산병원 2호실", date: "2024.12.15", status: "completed" },
-        { id: 5, name: "최지우님 빈소", place: "성모병원 7호실", date: "2024.12.10", status: "completed" },
-    ];
+    // Load Events from LocalStorage + Demo Data
+    React.useEffect(() => {
+        const loadEvents = () => {
+            // 1. Load Dynamic Events (saved from Dashboard)
+            const savedEventsStr = localStorage.getItem('partner_events');
+            const savedEvents = savedEventsStr ? JSON.parse(savedEventsStr) : [];
 
-    const events = activeTab === 'ongoing' ? ongoingEvents : completedEvents;
+            // 2. Demo Events (Keep for UI showcase)
+            // 2. Demo Events (Keep for UI showcase)
+            const demoEvents = []; // Removed hardcoded duplicates
+            const demoCompleted = [
+                { id: 993, name: "이영희님 빈소", place: "삼성서울병원 1호실", date: "2024.12.20", status: "completed" },
+                { id: 994, name: "박민수님 빈소", place: "아산병원 2호실", date: "2024.12.15", status: "completed" },
+                { id: 995, name: "최지우님 빈소", place: "성모병원 7호실", date: "2024.12.10", status: "completed" },
+            ];
+
+            // 3. Process Dynamic Events through getEventData helper
+            const processedDynamic = savedEvents.map(evt => getEventData(evt));
+            const processedDemo = demoEvents.map(evt => getEventData(evt)); // Wait, demo events might not need processing if they don't have LS triggers
+
+            // 4. Combine based on activeTab
+            // If tab is 'ongoing', show dynamic events (ongoing) + demo ongoing
+            // If tab is 'completed', show dynamic events (completed) + demo completed
+
+            // Simple Filter
+            const allEvents = [...processedDynamic, ...processedDemo, ...demoCompleted];
+
+            // Filter by active Tab
+            const filtered = allEvents.filter(e => e.status === activeTab);
+
+            // Sort by Date (Newest first) - Optional
+            // filtered.sort((a,b) => b.id - a.id); // Simple ID sort for now
+
+            setEvents(filtered);
+        };
+
+        loadEvents();
+        // Listen for updates (in case we come back from detail page)
+        window.addEventListener('storage', loadEvents);
+        return () => window.removeEventListener('storage', loadEvents);
+    }, [activeTab]);
+
+    // Const events removal since it's now state
+    // const events = activeTab === 'ongoing' ? ongoingEvents : completedEvents;
 
     return (
         <div className="pb-12 bg-brand-bg min-h-screen">
             <Top
                 title="행사 관리"
-                onBack={() => navigate('/')}
+                onBack={() => navigate('/dashboard')}
             />
 
             {/* Tabs */}

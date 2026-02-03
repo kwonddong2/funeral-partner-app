@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import EventList from './pages/EventList'
 import EventDetail from './pages/EventDetail'
@@ -22,6 +23,7 @@ import AdminLayout from './components/layout/AdminLayout'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminDispatch from './pages/admin/AdminDispatch'
 import AdminSettlement from './pages/admin/AdminSettlement'
+import AdminEventList from './pages/admin/AdminEventList'
 
 // Wrapper for Partner Layout to use with Nested Routes
 const PartnerLayout = () => (
@@ -34,9 +36,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Entry Point */}
+        <Route path="/" element={<Login />} />
+
         {/* Partner App Routes */}
         <Route element={<PartnerLayout />}>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/events" element={<EventList />} />
           <Route path="/events/history" element={<EventHistory />} />
@@ -58,6 +63,7 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
           <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="events" element={<AdminEventList />} />
           <Route path="dispatch" element={<AdminDispatch />} />
           <Route path="settlement" element={<AdminSettlement />} />
           <Route path="partners" element={<div className="p-8">준비 중입니다.</div>} />

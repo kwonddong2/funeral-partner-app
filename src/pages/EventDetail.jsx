@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { Phone, CheckCircle2, Lock, ArrowRight, Edit2, X, ChevronRight, Check } from 'lucide-react';
+import { Phone, CheckCircle2, Lock, ArrowRight, Edit2, X, ChevronRight, Check, AlertTriangle } from 'lucide-react';
 import Top from '../components/tds/Top';
 import ListHeader from '../components/tds/ListHeader';
 import Button from '../components/tds/Button';
@@ -27,6 +27,9 @@ const EventDetail = () => {
         extraCost: '',
         isReserved: false
     });
+
+    const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+    const [cancelReason, setCancelReason] = useState('');
 
     // 1. Get Saved State
     const savedConsultation = localStorage.getItem(`event_${id}_consultation`);
@@ -122,6 +125,35 @@ const EventDetail = () => {
         setToastMsg("차량 배차 정보가 저장되었습니다.");
         setShowToast(true);
         setTimeout(() => window.location.reload(), 500);
+        setTimeout(() => window.location.reload(), 500);
+    };
+
+    // Handler to Cancel Event
+    const handleCancelEvent = () => {
+        if (!cancelReason.trim()) {
+            setToastMsg("취소 사유를 입력해주세요.");
+            setShowToast(true);
+            return;
+        }
+
+        if (window.confirm("정말로 행사를 취소하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
+            // 1. Update Local Status
+            localStorage.setItem(`event_${id}_status`, 'cancelled');
+
+            // 2. Update Global List
+            const savedEventsStr = localStorage.getItem('partner_events');
+            if (savedEventsStr) {
+                const savedEvents = JSON.parse(savedEventsStr);
+                const updatedEvents = savedEvents.map(evt =>
+                    String(evt.id) === String(id) ? { ...evt, status: 'cancelled', cancelReason } : evt
+                );
+                localStorage.setItem('partner_events', JSON.stringify(updatedEvents));
+            }
+
+            setToastMsg("행사가 취소되었습니다.");
+            setShowToast(true);
+            setTimeout(() => navigate('/dashboard'), 1000);
+        }
     };
 
     // 2. Define All Steps
@@ -336,6 +368,16 @@ const EventDetail = () => {
                 </div>
             </div>
 
+            {/* Cancel Button */}
+            <div className="px-[20px] mt-[48px]">
+                <button
+                    onClick={() => setIsCancelModalOpen(true)}
+                    className="w-full py-4 text-[#8B95A1] text-[14px] underline hover:text-red-500 transition-colors"
+                >
+                    행사 취소하기
+                </button>
+            </div>
+
             {/* Jangji Edit Modal */}
             {isJangjiModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -479,6 +521,44 @@ const EventDetail = () => {
                             <Button onClick={handleSaveVehicle} variant="primary" size="large" className="w-full">
                                 저장하기
                             </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Cancel Modal */}
+            {isCancelModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+                    <div className="bg-white rounded-[24px] w-full max-w-[340px] overflow-hidden animate-fade-in-up">
+                        <div className="p-6 text-center">
+                            <div className="w-12 h-12 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <AlertTriangle size={24} />
+                            </div>
+                            <h3 className="text-[18px] font-bold text-brand-black mb-2">행사를 취소하시겠습니까?</h3>
+                            <p className="text-[14px] text-[#6B7684] mb-6">
+                                취소 후에는 복구가 불가능합니다.<br />
+                                취소 사유를 입력해주세요.
+                            </p>
+                            <textarea
+                                value={cancelReason}
+                                onChange={(e) => setCancelReason(e.target.value)}
+                                placeholder="예: 고객 변심으로 인한 취소"
+                                className="w-full h-24 p-3 bg-[#F9FAFB] border border-[#E5E8EB] rounded-[12px] text-[14px] outline-none focus:border-red-500 mb-6 resize-none"
+                            />
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={() => setIsCancelModalOpen(false)}
+                                    className="flex-1 py-3 bg-[#F2F4F6] rounded-[12px] font-bold text-[#6B7684]"
+                                >
+                                    돌아가기
+                                </button>
+                                <button
+                                    onClick={handleCancelEvent}
+                                    className="flex-1 py-3 bg-red-500 text-white rounded-[12px] font-bold shadow-lg shadow-red-200"
+                                >
+                                    취소하기
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

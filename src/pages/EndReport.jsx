@@ -25,11 +25,24 @@ const EndReport = () => {
     const handleFinish = () => {
         if (!isConfirmed) return;
 
-        // Mark event as closed (simulated)
+        // Mark event as closed
         if (window.confirm("정말로 행사를 종료하고 대기열로 복귀하시겠습니까?")) {
+            // 1. Update separate status (Legacy)
             localStorage.setItem(`event_${id}_status`, 'closed');
+
+            // 2. Update Global Event List (partner_events) for Admin
+            const savedEventsStr = localStorage.getItem('partner_events');
+            if (savedEventsStr) {
+                const savedEvents = JSON.parse(savedEventsStr);
+                const updatedEvents = savedEvents.map(evt =>
+                    // Comparision needs to handle string/number issues
+                    String(evt.id) === String(id) ? { ...evt, status: 'completed' } : evt
+                );
+                localStorage.setItem('partner_events', JSON.stringify(updatedEvents));
+            }
+
             alert("수고하셨습니다. 대기열로 복귀합니다.");
-            navigate('/'); // Go back to Dashboard
+            navigate('/dashboard'); // Go back to Dashboard
         }
     };
 

@@ -21,6 +21,15 @@ const Dashboard = () => {
         const prelimDone = localStorage.getItem(`event_${id}_preliminary_done`) === 'true';
 
         if (prelimStr && prelimDone) {
+            const status = localStorage.getItem(`event_${id}_status`);
+
+            // Should be active only if status is ongoing (or undefined which implies ongoing start)
+            // If closed or cancelled, we stay idle (or show history)
+            if (status === 'closed' || status === 'cancelled' || status === 'completed') {
+                setWorkflowState('idle');
+                return;
+            }
+
             const prelimData = JSON.parse(prelimStr);
             const consultStr = localStorage.getItem(`event_${id}_consultation`);
             const consultData = (consultStr && consultStr !== "undefined") ? JSON.parse(consultStr) : null;
@@ -149,11 +158,31 @@ const Dashboard = () => {
     const triggerDispatch = () => setWorkflowState('dispatching');
     const acceptDispatch = () => {
         setWorkflowState('accepted');
-        // Notify Admin
+
+        // 1. Notify Admin (Existing Logic)
         localStorage.setItem('dispatch_accepted_v2', JSON.stringify({
             acceptedAt: new Date().toISOString(),
-            partnerName: userName // "김지훈"
+            partnerName: userName
         }));
+
+        // 2. Create New Event from Dispatch Data
+        const newEvent = {
+            id: currentRequest.id || Date.now(),
+            name: `${currentRequest.customerName}님 (의뢰)`,
+            place: currentRequest.funeralHome || "장소 미정",
+            date: new Date().toLocaleDateString(), // Start Date
+            status: 'ongoing',
+            dispatchData: currentRequest // Store full details
+        };
+
+        // 3. Save to LocalStorage (partner_events)
+        const existingEventsStr = localStorage.getItem('partner_events');
+        const existingEvents = existingEventsStr ? JSON.parse(existingEventsStr) : [];
+        const updatedEvents = [newEvent, ...existingEvents]; // Add new event to top
+        localStorage.setItem('partner_events', JSON.stringify(updatedEvents));
+
+        // 4. Initialize Metadata for Event Detail Pages
+        localStorage.setItem(`event_${newEvent.id}_status`, 'ongoing');
     };
     const openReportModal = () => setWorkflowState('reporting');
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Send, DollarSign, Users, Bell, LogOut } from 'lucide-react';
+import { LayoutDashboard, Send, DollarSign, Users, Bell, LogOut, FileText } from 'lucide-react';
 
 const AdminLayout = () => {
     const navigate = useNavigate();
@@ -9,6 +9,7 @@ const AdminLayout = () => {
     const menuItems = [
         { id: 'dashboard', label: '대시보드', icon: <LayoutDashboard size={20} />, path: '/admin/dashboard' },
         { id: 'dispatch', label: '출동 관리', icon: <Send size={20} />, path: '/admin/dispatch' },
+        { id: 'events', label: '행사 관리', icon: <FileText size={20} />, path: '/admin/events' },
         { id: 'settlement', label: '정산 관리', icon: <DollarSign size={20} />, path: '/admin/settlement' },
         { id: 'partners', label: '파트너 관리', icon: <Users size={20} />, path: '/admin/partners' },
         { id: 'notice', label: '공지사항', icon: <Bell size={20} />, path: '/admin/notices' },
@@ -31,8 +32,8 @@ const AdminLayout = () => {
                             key={item.id}
                             onClick={() => navigate(item.path)}
                             className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors ${isActive(item.path)
-                                    ? 'bg-brand-orange text-white'
-                                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                                ? 'bg-brand-orange text-white'
+                                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                                 }`}
                         >
                             {item.icon}
